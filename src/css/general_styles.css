@@ -1,0 +1,55 @@
+body {
+    background-color: rgb(210, 212, 196);
+
+  }
+  h1 {
+    color: #000000;
+    text-align: center;
+    border-style: none none solid none;
+  }
+  
+  p {
+    color: red;
+  }
+
+  a:link {
+    color: green;
+    background-color: transparent;
+    text-decoration: none;
+  }
+  a:visited {
+    color: pink;
+    background-color: transparent;
+    text-decoration: none;
+  }
+  a:hover {
+    color: red;
+    background-color: transparent;
+    text-decoration: underline;
+  }
+  a:active {
+    color: yellow;
+    background-color: transparent;
+    text-decoration: underline;
+  }
+
+  pre{
+    color:burlywood;
+  }
+
+  iframe{
+    color:aqua;
+    border: 10px solid aqua;
+  }
+
+  button{
+    padding-left: -10;
+  }
+
+  div.sketch{
+    text-align: center;
+    color:aqua;
+    border-style: groove;
+    border: 10px, solid;
+    border-color: aliceblue;
+  }
