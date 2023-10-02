@@ -13,6 +13,7 @@ Welcome to Limited Spaces:
 The goal is to reach The Octogon
 
 Move by 'jumping', by pressing [SPACE]. Note: This consumes Energy.
+Attempting a jump at less than 1 energy will make your ship explode.
 
 Energy can be collected by touching pickups, which will give a fraction of the energy of one jump.
 
@@ -20,7 +21,7 @@ Pressing [any alphabetical key] will increase the force of your jumps.
 
 Pressing [.] will cause you to 'Pivot' shifting 45 deg clockwise. It will also stop player character motion.
 
-Jumping wil reset all alphabetical keys, as will pivoting.
+Jumping will reset all alphabetical keys, as will pivoting.
 
 `
 
@@ -64,6 +65,7 @@ function setup() {
   //Player Setup
   player =	new Sprite(50, canvas.h/2, 60, 'triangle');
   player.rotation = 90;
+  player.direction = 0;
 
   //Scene Setup
   border = new Sprite();
