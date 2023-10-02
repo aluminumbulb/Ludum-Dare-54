@@ -11,19 +11,27 @@ SPACE: 32,
 BACKSPACE: 8,
 ENTER: 13,
 SHIFT: 16,
-PERIOD: 190
+PERIOD: 190,
 }
 
 //Player Variables
+let player;
+
 let energy = 0;
-let flingCost = 1;
-let energyQ = .1; //the precent of the cost of one jump
+const flingCost = 1;
+const pickupE = .1; //amount of energy pickups replenish
+
+let vel = 0;
+let steps = 0;
+const s2v = .1;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
   player = new Sprite();
-  
+  player.d = 100;
+  player.color = 'pink';
+  player.stroke = 'red';
 }
 
 function draw() {
@@ -37,7 +45,17 @@ function draw() {
 
 //----ACTION DEFINITIONS
 function fling(){
-  console.log('Fling');
+  //player velocity = steps * velocity conversion factor (s2v)
+  player.speed += steps*s2v;
+  
+  //steps goes to zero
+  steps = 0;
+  
+  //fling cost gets deducted from energy
+  energy -= flingCost;
+  
+  //debug statement
+  console.log('Fling, steps: ',steps,' energy: ', energy);
 }
 
 function amplify(){
@@ -45,17 +63,23 @@ function amplify(){
 }
 
 function nsk(){
-  console.log('nsk');
+  console.log('nsk, steps: ',steps);
+  steps++;
 }
 
 function undo(){
-  return null;
+  console.log('undo');
+}
+
+//adds 45 degree 'spin' allowing the player to turn
+function pivot(){
+  player.direction += 45;
+  console.log('pivot')
 }
 
 //--------INPUT HANDLING------------
 function keyPressed(){
   
-
   //Camera Controls 
   if(keyCode == reservedKeys.LEFT_ARROW){
     console.log('Pan Left');
@@ -74,7 +98,6 @@ function keyPressed(){
   }
 
   //Player Controls
-
   if(keyCode == reservedKeys.SPACE){
     fling();
   }
@@ -87,29 +110,17 @@ function keyPressed(){
     amplify();
   }
 
-  if(checkNotReserved()) {
+  if(keyCode == reservedKeys.PERIOD){
+    pivot();
+  }
+
+  if(checkAlpha()) {
     nsk();
   }
 }
 
-function checkNotReserved(kC){
-  
-  //checks if in bounds of parentheses
-  return ((keyCode > 64 && keyCode < 91) ||  (keyCode > 96 && keyCode < 123));
-
-  //Runs through dict of defined keyCodes
-  //returns true it no matching keycode was found
-  /*for(const key in reservedKeys){
-
-    if(reservedKeys.key == kC){
-      
-      return false;
-    }
-    console.log(kC, ' isnt ', reservedKeys.key);
-  }
-
-  return true;
-  */
+function checkAlpha(kC){
+  return ((keyCode > 64 && keyCode < 91));
 }
 
 
