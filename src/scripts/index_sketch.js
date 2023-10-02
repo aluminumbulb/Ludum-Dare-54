@@ -7,7 +7,22 @@
 
 //failed attempt at checking, kept for cheap enumeration
 let instructionText = 
-`Welcome`
+`
+Welcome to Limited Spaces:
+
+The goal is to reach The Octogon
+
+Move by 'jumping', by pressing [SPACE]. Note: This consumes Energy.
+
+Energy can be collected by touching pickups, which will give a fraction of the energy of one jump.
+
+Pressing [any alphabetical key] will increase the force of your jumps.
+
+Pressing [.] will cause you to 'Pivot' shifting 45 deg clockwise. It will also stop player character motion.
+
+Jumping wil reset all alphabetical keys, as will pivoting.
+
+`
 
 const reservedKeys = {
 SPACE: 32,
@@ -20,7 +35,7 @@ PERIOD: 190,
 //Player Variables
 let player;
 
-let energy = 0;
+let energy = 3;
 const flingCost = 1;
 const pickupE = .1; //amount of energy pickups replenish
 
@@ -39,20 +54,21 @@ let totalPickups = 30;
 //End Point
 let endPoint;
 const overR = 30
+
 function setup() {
   //TO DO: normalize window sizes
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(windowWidth, 300);
+
+  changeText('Energy Total', energy);
 
   //Player Setup
-  player = new Sprite();
-  player.d = 100;
-  player.color = 'pink';
-  player.stroke = 'red';
+  player =	new Sprite(50, canvas.h/2, 60, 'triangle');
+  player.rotation = 90;
 
   //Scene Setup
   border = new Sprite();
-  border.w = 0;
-  border.h = 0;
+  border.w = 30;
+  border.h = canvas.h - (player.d + 100);
   border.collider = 'static';
   //Left Wall
   border.addCollider(0-((1/2)*(canvas.w)),0,margin, canvas.h);
@@ -73,25 +89,35 @@ function setup() {
   player.overlaps(pickups, gain);
 
   //End Points
-  endPoint = new Sprite(canvas.w-100,canvas.h/2, overR);
+  endPoint = new Sprite(canvas.w-100,canvas.h/2, overR, 'octagon');
 
   player.overlaps(endPoint, finish)
 
-  changeText('inst',"your mom");
+  //initialize instructions
+  changeText('inst',instructionText);
 }
 
 function draw() {
   background(255); // try removing this line and see what happens!
 }
 
+
+//Instructions
+
+function changeText(id, newText){
+  let myDiv = document.getElementById(id);
+  myDiv.innerText = newText;
+}
+
 //----DYNAMIC AND OVERLAPS
 function gain(player, pickup){
   energy += pickupE;
+  changeText('Energy Total', energy);
   pickup.remove();
 }
 
 function finish(){
-  console.log("Press Enter to Finish");
+  changeText(inst, 'Complete! Thank you so much for playing. Press F5 to restart');
 }
 
 //----MECHANIC DEFINITIONS
@@ -106,54 +132,35 @@ function fling(){
   energy -= flingCost;
   
   changeText('Energy Total', energy);
+  changeText('Step Counter', steps);
   //debug statement
   console.log('Fling, steps: ',steps,' energy: ', energy);
 }
 
-function amplify(){
-  console.log('Amplify');
-}
-
 function nsk(){
-  console.log('nsk, steps: ',steps);
   steps++;
-}
-
-function undo(){
-  console.log('undo');
+  changeText('Step Counter', steps)
 }
 
 //adds 45 degree 'spin' allowing the player to turn
 function pivot(){
+  player.speed = 0;
+  
+  steps = 0;
+  
+  //TO DO: Post mortem on potential 'change steps'
+  changeText('Step Counter', steps);
   player.direction += 45;
-  console.log('pivot')
+  player.rotation = player.direction + 90;
 }
 
 function explode(){
+  changeText(inst, 'In an explosion to quick for the naked eye, you have exploded from insufficient energy. F5 to restart');
   player.remove();
-  console.log('kaboom')
 }
 
 //--------INPUT HANDLING------------
 function keyPressed(){
-  
-  //Camera Controls 
-  if(keyCode == reservedKeys.LEFT_ARROW){
-    console.log('Pan Left');
-  }
-
-  if(keyCode == reservedKeys.RIGHT_ARROW){
-    console.log('Pan Right');
-  }
-
-  if(keyCode == reservedKeys.UP_ARROW){
-    console.log('Pan Right');
-  }
-
-  if(keyCode == reservedKeys.DOWN_ARROW){
-    console.log('Pan Right');
-  }
-
   //Player Controls
   if(keyCode == reservedKeys.SPACE){
     if(energy>flingCost){
@@ -176,6 +183,7 @@ function keyPressed(){
   }
 
   if(keyCode == reservedKeys.PERIOD){
+    clearJump();
     pivot();
   }
 
@@ -188,11 +196,8 @@ function checkAlpha(kC){
   return ((keyCode > 64 && keyCode < 91));
 }
 
-//Instructions
-
-function changeText(id, newText){
-  let myDiv = document.getElementById(id);
-  myDiv.innerText = newText;
+function clearJump(){
+  steps = 0;
 }
 
 

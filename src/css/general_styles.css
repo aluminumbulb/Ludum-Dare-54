@@ -53,3 +53,13 @@ body {
     border: 10px, solid;
     border-color: aliceblue;
   }
+
+  table,th,td,tr{
+    margin:auto;
+    text-align: center;
+    border-style: solid;
+  }
+
+  tr{
+    width:50%;
+  }
