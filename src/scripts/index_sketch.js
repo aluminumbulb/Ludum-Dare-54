@@ -5,7 +5,7 @@
 
 //Setting Special input Keys
 
-
+//failed attempt at checking, kept for cheap enumeration
 const reservedKeys = {
 SPACE: 32,
 BACKSPACE: 8,
@@ -14,14 +14,17 @@ SHIFT: 16,
 PERIOD: 190
 }
 
+//Player Variables
+let energy = 0;
+let flingCost = 1;
+let energyQ = .1; //the precent of the cost of one jump
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
+
+  player = new Sprite();
   
-  checkNotReserved()
-  console.log("setup");
 }
-
-
 
 function draw() {
   background(255); // try removing this line and see what happens!
@@ -32,8 +35,24 @@ function draw() {
   text('You can do this', width / 2, height / 2);
 }
 
-//Going to try to abstract this a bit
-//similar to unreal's system
+//----ACTION DEFINITIONS
+function fling(){
+  console.log('Fling');
+}
+
+function amplify(){
+  console.log('Amplify');
+}
+
+function nsk(){
+  console.log('nsk');
+}
+
+function undo(){
+  return null;
+}
+
+//--------INPUT HANDLING------------
 function keyPressed(){
   
 
@@ -57,22 +76,21 @@ function keyPressed(){
   //Player Controls
 
   if(keyCode == reservedKeys.SPACE){
-    console.log('Fling');
+    fling();
   }
 
   if(keyCode == reservedKeys.BACKSPACE){
-    console.log('Undo');
+    undo();
   }
 
   if(keyCode == reservedKeys.SHIFT){
-    console.log('Amplify');
+    amplify();
   }
 
   if(checkNotReserved()) {
-    console.log('nsk');
+    nsk();
   }
 }
-
 
 function checkNotReserved(kC){
   
