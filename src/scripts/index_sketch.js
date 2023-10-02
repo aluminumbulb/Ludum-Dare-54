@@ -10,7 +10,7 @@ let instructionText =
 `
 Welcome to Limited Spaces:
 
-The goal is to reach The Octogon
+The goal is to reach The Octagon
 
 Move by 'jumping', by pressing [SPACE]. Note: This consumes Energy.
 Attempting a jump at less than 1 energy will make your ship explode.
